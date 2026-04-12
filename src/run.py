@@ -1,4 +1,3 @@
-import stable_baselines3
 from sb3_contrib import RecurrentPPO
 from sb3_contrib.ppo_recurrent import CnnLstmPolicy
 from gymnasium.wrappers import GrayscaleObservation
@@ -6,10 +5,9 @@ from stable_baselines3.common.vec_env import VecFrameStack, DummyVecEnv
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.env_checker import check_env
 import os
-import sys
-import shutil
 import er_environment
 from backend import er_helper
+import argparse
 
 LEARNING_RATE = 0.0002
 CHECKPOINT_DIR = './model/'
@@ -44,12 +42,24 @@ def train_ppo(n_train):
     env = DummyVecEnv([lambda: env]) # maybe in the future make it so there can be multiple environments
     env = VecFrameStack(env, 4, channels_order='last')
 
-    model = RecurrentPPO(CnnLstmPolicy, env, verbose=2, learning_rate=LEARNING_RATE, n_steps=1024, batch_size=64, tensorboard_log=LOG_DIR, seed=0)
+    model = RecurrentPPO(CnnLstmPolicy, env, verbose=2, learning_rate=LEARNING_RATE, n_steps=1024, batch_size=32, tensorboard_log=LOG_DIR, seed=0)
     #model.load("./model/1.zip")
-    model.learn(total_timesteps=(n_train*1024), callback=callback, progress_bar=True)
+    model.learn(total_timesteps=(n_train), callback=callback, progress_bar=True)
 
 if __name__ == "__main__":
-    # TODO: Make some arg flags -d for database -t for timesteps
-    # create streamlit application within this file
-    n_train = int(sys.argv[1]) if len(sys.argv) > 1 else 1000
+    par = argparse.ArgumentParser(description="Command-line flags")
+    par.add_argument("-t", "--timesteps",
+                    help="Specify the number of timesteps for the training process",
+                    required=True)
+
+    # TODO: Add back support to disable the database functions
+    # TODO: Add in a function that allows changing the n_steps in training loop
+
+    n_train = 0
+
+    try:
+        n_train = int(par.parse_args().timesteps)
+    except:
+        raise TypeError("Improper value given for --timesteps")
+
     train_ppo(n_train)

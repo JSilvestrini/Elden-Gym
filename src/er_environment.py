@@ -32,7 +32,7 @@ current_boss = {
 }
 
 class EldenRing(gymnasium.Env):
-    def __init__(self, train_mode = 0, n_steps = 1024):
+    def __init__(self, train_mode=0, n_steps = 1024):
         self.__process_wrapper = pm.ProcessWrapper(application_name="eldenring.exe")
         self.__game = GameAccessor(wrapper=self.__process_wrapper)
         self.__camera = dxcam.create(output_color="RGB", max_buffer_len=4)
@@ -54,7 +54,7 @@ class EldenRing(gymnasium.Env):
         self.ds4_controller = vg.VDS4Gamepad()
 
         self.observation_space = gymnasium.spaces.Box(low = 0, high = 255, shape = ((self.__region[3]- self.__region[1]), (self.__region[2] - self.__region[0]), 3), dtype=np.uint8)
-        self.train_mode = train_mode
+        self.terminal_func = [self.one_shot_done, self.range_done, self.reg_done][train_mode]
         self.reward_function = self.complex_reward
         self.games = 0
 
@@ -79,7 +79,7 @@ class EldenRing(gymnasium.Env):
     def __enter__(self):
         pass
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_val, tb):
         self.__process_wrapper.close()
 
     def reset_controller(self):
@@ -323,7 +323,7 @@ class EldenRing(gymnasium.Env):
         
         self.screenshot()
         self.reward_function()
-        done = ([self.one_shot_done(), self.range_done(), self.reg_done()][self.train_mode])
+        done = self.terminal_func()
 
         truncated = False
 
