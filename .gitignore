@@ -1,3 +1,6 @@
 eldenring_gym_contrib
 test.py
-src
+*__pycache__
+logs
+model
+*db
