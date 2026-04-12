@@ -28,7 +28,7 @@ controller_action_space = {
 current_boss = {
     0 : walk_back.soldier_godrick,
     1 : walk_back.beastman,
-    2 : walk_back.leonine_misbegotten
+    2 : walk_back.scaly_misbegotten
 }
 
 class EldenRing(gymnasium.Env):
@@ -122,6 +122,7 @@ class EldenRing(gymnasium.Env):
         self.__game.rotate(self.enemy_container.door_rotation)
         er_helper.lock_on()
         er_helper.enter_boss()
+        # 60060 THIS IS THE FOG WALL ANIMATION, CAN CHECK WHEN ANIMATION IS 0
         self.__game.teleport(self.enemy_container.get_arena_coords(self.started_in_round_table))
         self.__game.rotate(self.enemy_container.arena_rotation)
         er_helper.lock_on()

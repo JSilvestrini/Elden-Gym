@@ -79,6 +79,24 @@ def beastman(talk: bool) -> EnemyContainer:
 
     return e
 
+def scaly_misbegotten(talk: bool) -> EnemyContainer:
+    if talk:
+        talk_to_gideon([2, 4, 2])
+
+    e = EnemyContainer()
+    e.enemy_ID = 34510912 # 1490000D?
+    e.door_map_ID = 536870912
+    e.door_coords = [7.523, 0.005, 3.072]
+    e.door_rotation = [-0.9998, 0.0163]
+    e.arena_map_ID = e.door_map_ID
+    e.arena_tp_coords = [5.035, -0.270, 17.716]
+    e.arena_rotation = [0.9946, 0.1033]
+    e.true_door_coords = e.door_coords
+    e.true_arena_coords = e.arena_tp_coords
+    e.stake = False
+
+    return e
+
 # LEGACY
 
 def elemer() -> List[int]:

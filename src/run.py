@@ -36,13 +36,12 @@ class CallBack(BaseCallback):
 def train_ppo(n_train):
     callback = CallBack(freq=4096, path=CHECKPOINT_DIR)
 
-    env = er_environment.EldenRing(train_mode=2, n_steps=1024)
+    env = er_environment.EldenRing(train_mode=2, n_steps=512)
     #print(env.observation_space.shape)
     env = GrayscaleObservation(env, keep_dim=True)
     env = DummyVecEnv([lambda: env]) # maybe in the future make it so there can be multiple environments
-    env = VecFrameStack(env, 4, channels_order='last')
 
-    model = RecurrentPPO(CnnLstmPolicy, env, verbose=2, learning_rate=LEARNING_RATE, n_steps=1024, batch_size=32, tensorboard_log=LOG_DIR, seed=0)
+    model = RecurrentPPO(CnnLstmPolicy, env, verbose=2, learning_rate=LEARNING_RATE, n_steps=512, batch_size=32, tensorboard_log=LOG_DIR, seed=0)
     #model.load("./model/1.zip")
     model.learn(total_timesteps=(n_train), callback=callback, progress_bar=True)
 
