@@ -138,7 +138,7 @@ I plan to expand the environment to support the following encounters:
 
 - **Shadow of the Erdtree:** Rellana, Twin Moon Knight, Messmer the Impaler, Midra, Lord of Frenzied Flame.
 
-Additionally, I intend to create video documentation of the performance of the agent's performance and continue expanding the API.
+Additionally, I intend to work on stability of the environment, reduce the amount of hard-coded time.sleep() calls, create video documentation of the agent's performance, and continue expanding the API.
 
 ---
 
