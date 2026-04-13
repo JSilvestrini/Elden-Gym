@@ -18,6 +18,12 @@ _Untrained agent on "one-shot" mode_
     - [Key-Features](#key-features)
     - [Environment Observations](#environment-observations)
     - [Getting Started](#getting-started)
+- [Elden Ring API](#elden-ring-api)
+- [Roadmap](#roadmap)
+- [Known Issues and Limitations](#known-issues-and-limitations)
+- [Credits and Inspirations](#credits-and-inspirations)
+- [Troubleshooting](#troubleshooting)
+- [Research and Results](#research-and-results)
 
 ## Overview
 
@@ -179,7 +185,7 @@ The initial idea for this came from a [community discussion on Reddit](https://w
 _Currently in progress_
 
 The agent is training using the Recurrent PPO algorithm (from sb3-contrib) using a CNNLSTM policy architecture.
-The goal is to test if an agent using both frame-stacking and LSTMs can out-generalize the SoulsGym baseline that only uses ground-truth state information.
+The goal is to test if an agent using screen capture and LSTM can out-generalize the SoulsGym baseline that only uses ground-truth state information. My belief is that it will, and that using a LSTM policy will have the agent perform better than just using frame stacking since the environment is complex. See [here](https://github.com/seoboseung/24KoreaAIconf).
 
 Initial training is focused on the current bosses:
 

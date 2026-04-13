@@ -88,6 +88,7 @@ class EldenRing(gymnasium.Env):
         self.currently_pressed = 0
 
     def kill_player(self):
+        # TODO: Check pointer
         self.reset_controller()
 
         if self.player_current_health > 0:
@@ -98,6 +99,7 @@ class EldenRing(gymnasium.Env):
             self.speed_hack.set_game_speed(8)
 
             if (self.__game.get_player_health() <= 0 or stake):
+                # TODO: Check pointer
                 time.sleep(5)
                 er_helper.key_press('e')
                 er_helper.key_press('e')
@@ -105,29 +107,33 @@ class EldenRing(gymnasium.Env):
         time.sleep(10)
 
     def begin_boss(self):
+        # TODO: Check pointer
         self.started_in_round_table = self.__game.player_in_roundtable()
         #self.enemy_container = current_boss[int(str(self.games)[0]) % 3](self.started_in_round_table)
-        self.enemy_container : EnemyContainer = current_boss[0](self.started_in_round_table)
+        self.enemy_container : EnemyContainer = current_boss[int(str(self.games)[0]) % 3](self.started_in_round_table)
 
         if not (self.__game.get_map_id() == self.enemy_container.door_map_ID and self.started_in_round_table):
             self.__game.reset()
 
     def switch_boss(self):
+        # TODO: Check pointer
         if (not self.__game.player_in_roundtable()):
             er_helper.travel_to_roundtable()
             self.__game.reset()
 
     def begin_attempt(self):
+        # TODO: Check pointer
         self.__game.teleport(self.enemy_container.get_door_coords(self.started_in_round_table))
         self.__game.rotate(self.enemy_container.door_rotation)
         er_helper.lock_on()
-        er_helper.enter_boss()
-        # 60060 THIS IS THE FOG WALL ANIMATION, CAN CHECK WHEN ANIMATION IS 0
+        er_helper.enter_boss() # TODO: Check below
+        # TODO: 60060 <- THIS IS THE FOG WALL ANIMATION, CAN CHECK WHEN ANIMATION IS 0
         self.__game.teleport(self.enemy_container.get_arena_coords(self.started_in_round_table))
         self.__game.rotate(self.enemy_container.arena_rotation)
         er_helper.lock_on()
 
     def reset(self, seed = 0, options = 0) -> None:
+        # TODO: Check pointer
         self.win = False
 
         self.speed_hack.set_game_speed(1)
@@ -166,6 +172,7 @@ class EldenRing(gymnasium.Env):
         return self.state(), {}
 
     def reset_ground_truth(self) -> None:
+        # TODO: Check pointer
         self.begin_time = time.time()
         # used for rewards
         self.deal_damage_timer = time.time()
@@ -225,6 +232,7 @@ class EldenRing(gymnasium.Env):
             return
 
     def update(self) -> None:
+        # TODO: Check pointer
         self.player_previous_health = self.player_current_health
         self.player_previous_stamina = self.player_current_stamina
         self.player_previous_fp = self.player_current_fp
@@ -300,6 +308,7 @@ class EldenRing(gymnasium.Env):
         return False
 
     def reg_done(self) -> bool:
+        # TODO: Check pointer
         if self.__game.get_player_dead():
             self.reward -= 50
             return True
@@ -330,6 +339,7 @@ class EldenRing(gymnasium.Env):
 
         if self.time_step_total % self.n_steps == 0 and self.time_step_total > 1:
             truncated = True
+            # TODO: Check pointer
             if not self.__game.player_in_roundtable():
                 self.__game.kill_player()
             er_helper.clean_keys()

@@ -52,7 +52,8 @@ if __name__ == "__main__":
                     required=True)
 
     # TODO: Add back support to disable the database functions
-    # TODO: Add in a function that allows changing the n_steps in training loop
+    # TODO: Add in arg that allows changing the n_steps in training loop
+    # TODO: Add in arg that allows changing batch size
 
     n_train = 0
 

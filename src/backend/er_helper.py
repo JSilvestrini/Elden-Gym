@@ -154,6 +154,7 @@ def travel_to_roundtable():
     key_press('r')
     time.sleep(0.3)
     key_press('e')
+    # TODO: Move to environment and check pointer and animation, below line
     time.sleep(12)
 
 def talk_to_gideon(slots: list) -> None:
@@ -169,4 +170,5 @@ def talk_to_gideon(slots: list) -> None:
         key_press('e')
         time.sleep(0.2)
     key_press('e')
+    # TODO: Move to environment and check pointer and animation, below line
     time.sleep(12)
