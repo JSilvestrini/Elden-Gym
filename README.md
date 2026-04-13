@@ -30,6 +30,8 @@ _Untrained agent on "one-shot" mode_
 Elden-Gym provides a bridge between Elden Ring and Stable Baselines3, specifically sb3-contrib, due to the recurrentPPO policy that is available. Unlike other Elden Ring environments that use screen capture and pixel processing to determine reward information, this environment utilizes the memory of the game itself, similar to [SoulsGym](https://github.com/amacati/SoulsGym), which is also the main
 inspiration for this project. However, unlike that project, this game does not use ground-truth state information and instead uses screen capture to increase generalizability of the agent.
 
+**NOTE:** This version of Elden-Gym is a rewrite of a previous version I created, which is now archived and privated to reduce confusion. The previous version did not use PyMym and it had a separate environment which was going to be used to test imitation learning. In the future this environment may be brought back.
+
 #### Key-Features
 
 - **Direct Memory Observation** - The environment interacts and views memory directly and has the memory offsets loaded so simple functions can be used to access values that correspond with the player and boss.
@@ -146,11 +148,11 @@ Additionally, I intend to work on stability of the environment, reduce the amoun
 
 - **Cutscenes:** When first developing the API and environment, it was difficult to determine if the agent was in a cutscene or not due to the cutscene flag becoming 'sticky' or failing to toggle. Currently I am working on a different way to determine if the agent is in a cutscene or loading state without relying on pixel processing.
 
-- **Lock-on:** To minimize the action space, the environment currently forces the agent to lock on as soon as it enters the arena. For most bosses this is fine, but for large or mobile bosses this is an issue.
+- **Lock-on:** To minimize the action space, the environment currently forces the agent to lock on as soon as it enters the arena. For most bosses this is fine, but for large or mobile bosses this is an issue. This is also an issue for cluttered arenas where objects may block view of the boss.
 
 - **Multi-Enemy Fights:** While this was originally supported before the rewrite, the current lock-on constraints and simplified action space made maintaining this feature challenging. Once the action space is expanded to support lock-on and camera control this will be looked at again.
 
-- **Ashes of War:** Currently these are not supported to keep the action space manageable. This may be revisited in the future once a multi-discrete action space is deemed manageable.
+- **Stance-Based Ashes of War:** Currently these are not supported to keep the action space manageable. This may be revisited in the future once a multi-discrete action space is deemed manageable.
 
 ---
 
@@ -165,6 +167,9 @@ The initial idea for this came from a [community discussion on Reddit](https://w
 - **[The Grand Archives](https://github.com/The-Grand-Archives/Elden-Ring-CT-TGA) & [Elden Ring FPS](https://github.com/Dasaav-dsv/erfps/tree/master):** These resources contained information about the byte patterns and pointer chains that were needed to locate state information for the environment.
 
 - **[Elden Ring Boss Arena](https://www.nexusmods.com/eldenring/mods/5645?tab=files&file_id=31835):** This mod was essential in streamlining the training process by allowing instant boss resets and menu-based boss navigation rather than boss runs.
+
+**Papers**
+placeholder
 
 ---
 
@@ -185,10 +190,19 @@ The initial idea for this came from a [community discussion on Reddit](https://w
 _Currently in progress_
 
 The agent is training using the Recurrent PPO algorithm (from sb3-contrib) using a CNNLSTM policy architecture.
-The goal is to test if an agent using screen capture and LSTM can out-generalize the SoulsGym baseline that only uses ground-truth state information. My belief is that it will, and that using a LSTM policy will have the agent perform better than just using frame stacking since the environment is complex. See [here](https://github.com/seoboseung/24KoreaAIconf).
+The goal is to test if an agent using screen capture and LSTM can out-generalize the SoulsGym baseline that only uses ground-truth state information, my belief is that it will. Furthermore, I believe that using a LSTM policy will have the agent perform better than just using frame stacking since the environment is complex, this has yet to be tested in this environment. See [here](https://github.com/seoboseung/24KoreaAIconf) for reasoning behind my claim.
 
 Initial training is focused on the current bosses:
 
 - Soldier of Godrick
 - Beastman of Farum Azula
 - Scaly Misbegotten
+
+Training is performed on a personal machine with the following specs:
+
+- **OS:** Windows 11 Pro v10.0.26200
+- **CPU:** Intel i7-9700K @ 3.60 GHz
+- **GPU:** NVIDIA GeForce RTX 4070 Ti, 12 GB
+- **RAM:** 64 GB @ 2133 MHz
+
+I am currently looking into using old hardware I have on hand to accelerate the process.
